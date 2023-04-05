@@ -25,10 +25,10 @@ async function dropTables() {
     console.log("Dropping All Tables...")
 
     await client.query(`
-      DROP TABLE IF EXISTS users;
-      DROP TABLE IF EXISTS activities;
+      DROP TABLE IF EXISTS routine_activities;
       DROP TABLE IF EXISTS routines;
-      DROP TABLE IF EXISTS routineactivities;
+      DROP TABLE IF EXISTS activities;
+      DROP TABLE IF EXISTS users;
     `);
     console.log('Finished dropping ALL tables!');
   } catch (error) {
@@ -48,25 +48,26 @@ async function createTables() {
         username varchar(255) UNIQUE NOT NULL,
         password varchar(255) NOT NULL
       );
-      /* CREATE TABLE activities(
+      CREATE TABLE activities(
         id SERIAL PRIMARY KEY,
         name varchar(255) NOT NULL,
         description TEXT NOT NULL
       );
       CREATE TABLE routines(
-        "creatorid" INTEGER REFERENCES users(id),
+        id SERIAL PRIMARY KEY,
+        "creatorId" INTEGER REFERENCES users(id),
         "isPublic" BOOLEAN DEFAULT false,
         name varchar(255) NOT NULL,
         goal TEXT NOT NULL
       );
-      CREATE TABLE routineactivities(
+      CREATE TABLE routine_activities(
         id SERIAL PRIMARY KEY,
-        "routineid" INTEGER REFERENCES routines(id),
-        "activityid" INTEGER REFERENCES activities(id),
+        "routineId" INTEGER REFERENCES routines(id),
+        "activityId" INTEGER REFERENCES activities(id),
         duration INTEGER,
         count INTEGER,
-        UNIQUE ("routineid", "activityid")
-      ); */
+        UNIQUE ("routineId", "activityId")
+      );
     `)
     console.log("Finished creating tables!");
   } catch (error) {
@@ -171,7 +172,7 @@ async function createInitialRoutines() {
 }
 
 async function createInitialRoutineActivities() {
-  console.log("starting to create routine_activities...")
+  console.log("Starting to create routine_activities...")
   const [bicepRoutine, chestRoutine, legRoutine, cardioRoutine] =
     await getRoutinesWithoutActivities()
   const [bicep1, bicep2, chest1, chest2, leg1, leg2, leg3] =
@@ -236,7 +237,7 @@ async function createInitialRoutineActivities() {
   const routineActivities = await Promise.all(
     routineActivitiesToCreate.map(addActivityToRoutine)
   )
-  console.log("routine_activities created: ", routineActivities)
+  console.log("Routine_activities created: ", routineActivities)
   console.log("Finished creating routine_activities!")
 }
 
