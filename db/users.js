@@ -29,9 +29,9 @@ async function getUser({ username, password }) {
     console.log('Finding user...')
     const user = await getUserByUsername(username);
     const hashedPass = user.password;
-    const match = await compare(password, hashedPass);
 
-    if (match) {
+    const passwordMatch = await compare(password, hashedPass);
+    if (passwordMatch) {
       delete user.password;
       return user;
     }

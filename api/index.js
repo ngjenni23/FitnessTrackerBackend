@@ -1,8 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
+
 // GET /api/health
-router.get('/health', async (req, res, next) => {
+router.get('/health', async (req, res) => {
+    res.send({
+        message: "Health"
+    })
 });
 
 // ROUTER: /api/users
@@ -20,5 +24,13 @@ router.use('/routines', routinesRouter);
 // ROUTER: /api/routine_activities
 const routineActivitiesRouter = require('./routineActivities');
 router.use('/routine_activities', routineActivitiesRouter);
+
+router.use((req, res,) => {
+    res.status(404).send(
+        {
+        message: "Please enter a valid endpoint",
+        },
+    );
+  });
 
 module.exports = router;
