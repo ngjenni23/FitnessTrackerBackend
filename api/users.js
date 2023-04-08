@@ -11,7 +11,6 @@ const { createUser,
     } = require('../db');
 
 // POST /api/users/register
-
 usersRouter.post('/register', async(req, res, next) => {
     const { username, password } = req.body;
     const existingUsernames = await getUserByUsername(username);
@@ -66,7 +65,6 @@ usersRouter.post('/register', async(req, res, next) => {
 
 
 // POST /api/users/login
-
 usersRouter.post('/login', async(req, res, next) => {
     const { username, password } = req.body;
 
@@ -103,7 +101,6 @@ usersRouter.post('/login', async(req, res, next) => {
 })
 
 // GET /api/users/me
-
 usersRouter.get('/me', async(req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -129,7 +126,6 @@ usersRouter.get('/me', async(req, res, next) => {
 })
 
 // GET /api/users/:username/routines 
-
 usersRouter.get('/:username/routines', async(req, res, next) => {
     const { username } = req.params;
     const authHeader = req.headers.authorization;

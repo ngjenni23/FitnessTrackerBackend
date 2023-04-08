@@ -8,7 +8,7 @@ async function createRoutine({ creatorId, isPublic, name, goal }) {
       INSERT INTO routines("creatorId", "isPublic", name, goal)
       VALUES ($1, $2, $3, $4)
       RETURNING *;
-    `, [creatorId, isPublic, name, goal]);
+    `, [creatorId, isPublic, name.toLowerCase(), goal]);
 
     console.log("Finsihed creating routine!")
     return routine;
@@ -26,6 +26,9 @@ async function getRoutineById(id) {
       WHERE id = $1
     `, [id]);
 
+    if (!routine) {
+      return null
+    }
     console.log("Finsihed finding routine by id!");
     return routine;
   } catch (error) {
@@ -186,7 +189,7 @@ async function destroyRoutine(id) {
     WHERE "routineId" = $1
     `, [id]);
 
-    const { rows: deletedRoutine } = await client.query(`
+    const { rows: [deletedRoutine] } = await client.query(`
       DELETE FROM routines
       WHERE id = $1
       RETURNING *;

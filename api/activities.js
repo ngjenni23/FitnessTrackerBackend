@@ -30,19 +30,14 @@ activitiesRouter.get("/:activityId/routines", async(req, res, next) => {
 })
 
 // GET /api/activities
-
-activitiesRouter.get('/', async(req, res, next) => {
-    try {
+activitiesRouter.get('/', async(req, res) => {
         const allActivities = await getAllActivities();
         res.send(allActivities);
-    } catch ({ name, message }) {
-        next ({ name, message });
-    }
 })
 
 // POST /api/activities
-
 activitiesRouter.post('/', async(req, res, next) => {
+    const { name, description } = req.body;
     const authHeader = req.headers.authorization;
     if (!authHeader) {
         res.status(401).send({
@@ -67,8 +62,11 @@ activitiesRouter.post('/', async(req, res, next) => {
                     message: "Missing activity name or description"
                 })
            } else {
-                const newActivity = await createActivity({ name, description });
-                res.send(newActivity);
+                await createActivity({ name, description });
+                res.send({
+                    name: name,
+                    description: description
+                });
            }
         } catch ({ name, message }) {
         next ({ name, message });
@@ -77,7 +75,6 @@ activitiesRouter.post('/', async(req, res, next) => {
 })
 
 // PATCH /api/activities/:activityId
-
 activitiesRouter.patch('/:activityId', async(req, res, next) => {
     const { activityId } = req.params;
     const { name, ...fields} = req.body;

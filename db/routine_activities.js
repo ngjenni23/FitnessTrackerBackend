@@ -116,6 +116,19 @@ async function canEditRoutineActivity(routineActivityId, userId) {
   }
 }
 
+async function getActivityByRoutineAndActivityIds(routineId, activityId) {
+  try {
+  const {rows: Ids } = await client.query(`
+  SELECT *
+  FROM routine_activities
+  WHERE "routineId"=$1
+  AND "activityId"=$2`, [routineId, activityId])
+  return Ids
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   getRoutineActivityById,
   addActivityToRoutine,
@@ -123,4 +136,5 @@ module.exports = {
   updateRoutineActivity,
   destroyRoutineActivity,
   canEditRoutineActivity,
+  getActivityByRoutineAndActivityIds
 };
