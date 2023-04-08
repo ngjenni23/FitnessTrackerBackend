@@ -71,6 +71,8 @@ routinesRouter.patch('/:routineId', async (req, res, next) => {
         const userId = decoded.id
         const user = await getUserById(userId)
 
+        console.log("routine", routine, "routineId", routineId);
+        console.log("creatorId", routine.creatorId, "userId", user.id);
         if (routine.creatorId !== user.id) {
             res.status(403).send({
                 error: 'error',

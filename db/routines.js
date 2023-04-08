@@ -30,7 +30,7 @@ async function getRoutineById(id) {
       return null
     }
     console.log("Finsihed finding routine by id!");
-    return routine;
+    return routine[0];
   } catch (error) {
     console.log("Error finding routine by id");
     throw error;
